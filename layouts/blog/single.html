@@ -1,0 +1,68 @@
+{{ define "main" }}
+
+<section data-pagefind-body>
+  <article class="blog-post">
+    
+    {{ partial "bookshop_bindings" `(dict "Params" .Params.post_hero "post_tags" .Params.tags)` }}
+    {{ partial "bookshop" (slice "blog/hero" (dict "Params" .Params.post_hero "post_tags" .Params.tags)) }}
+
+    <div data-cms-edit="content" class="markdown-text">
+      {{ .Content }}
+    </div>
+  </article>
+  
+</section>
+
+<section class="blog-related">
+  <h2 class="blog-related-title">Recent Posts</h2>
+  <div class="blog-related-posts">
+    {{ with (where (where .Site.RegularPages "Section" "blog") "Title" "!=" .Title ) }}
+      {{ $sorted_dates := . }}
+      {{ $sorted_dates = $sorted_dates.ByParam "post_hero.date" }}
+      {{ range $sorted_dates.Reverse | first 3 }}
+        <div>
+          <a href="{{ .Permalink | relURL }}">
+            {{ if hasSuffix .Params.thumb_image_path ".svg" }}
+              <img 
+                src="{{ .Params.thumb_image_path }}" 
+                alt="{{ .Params.thumb_image_alt }}"
+                class="blog-related-post-thumb"
+                loading="lazy"
+              >
+            {{ else }}
+              {{ $image := resources.Get .Params.thumb_image_path }}
+              {{ $image = $image.Resize "700x webp" }}
+              {{ with $image }}
+                <img 
+                  src="{{ .RelPermalink }}" 
+                  width="{{ .Width }}" 
+                  height="{{ .Height }}" 
+                  class="blog-related-post-thumb"
+                  alt="{{ $.Params.thumb_image_alt }}"
+                  loading="lazy"
+                >
+              {{ end }}
+            {{ end }}
+          </a>
+          <div class="blog-related-post-content">
+            <a class="blog-related-post-title" href="{{ .Permalink | relURL }}">
+              {{ .Params.title }}
+            </a>
+            {{ with .Params.post_hero.date }}
+              <p>{{ . | time.Format ":date_long" }}</p>
+            {{ end }}
+            {{ with .Params.tags }}
+              <div class="blog-post-tags">
+                {{ range . }} 
+                  {{ $href := print (absURL "tags/") (urlize .) }}
+                  <a href="{{ $href }}">{{ . | humanize }}</a>
+                {{ end }}
+              </div>
+            {{ end }}
+          </div>
+        </div>
+      {{ end }}
+    {{ end }}
+  </div>
+</section>
+{{ end }}

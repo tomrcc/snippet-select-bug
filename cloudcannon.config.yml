@@ -1,0 +1,499 @@
+timezone: Etc/UTC
+
+source_editor:
+  tab_size: 2
+  theme: monokai
+  show_gutter: true
+
+paths:
+  static: static
+  uploads: static/images
+
+commit_templates:
+  - label: Default message
+    template_string: '[default_commit_message]'
+  - label: Custom message
+    template_string: '{message}'
+
+collections_config:
+  pages:
+    path: content
+    icon: laptop_mac
+    url: '/[full_slug]/'
+    glob:
+      - '**/*.md'
+      - '!blog/*'
+    _enabled_editors:
+      - visual
+    new_preview_url: /
+    schemas:
+      default:
+        path: '.cloudcannon/schemas/page.md'
+    create:
+      path: '[relative_base_path]/{filename|slugify|lowercase}.md'
+  blog:
+    icon: newspaper
+    path: content/blog
+    url: '/blog/[full_slug]/'
+    schemas:
+      default:
+        path: '.cloudcannon/schemas/post.md'
+      paginated:
+        path: '.cloudcannon/schemas/paginated-page.md'
+    create:
+      path: '[relative_base_path]/{filename|slugify|lowercase}.md'
+    add_options:
+      - name: Add Page
+        editor: visual
+        schema: default
+    _enabled_editors:
+      - visual
+      - content
+    _inputs:
+      thumb_image:
+        options:
+          preview:
+            image: 
+              - key: image_path
+            text:
+              - key: alt_text
+              - Thumbnail Image
+            subtext:
+              - key: image_path
+              - Update Image Path and Alt Text
+      featured_image:
+        options:
+          preview:
+            image: 
+              - key: image_path
+            text:
+              - key: alt_text
+              - Hero Image
+            subtext:
+              - key: image_path
+              - Update Image Path and Alt Text
+  data:
+    path: data
+    disable_url: true
+    glob:
+      - '!icons.yml'
+    icon: analytics
+    _inputs:
+      value:
+        type: color
+
+collection_groups:
+  - heading: Pages
+    collections:
+      - pages
+      - blog
+  - heading: Data
+    collections:
+      - data
+
+data_config:
+  colors:
+    path: data/colors.yml
+  tags:
+    path: data/tags.yml
+  icons:
+    path: data/icons.yml
+  seo:
+    path: data/seo.yml
+
+file_config:
+  - glob: data/colors.yml
+    _structures:
+      color:
+        values:
+          - value:
+              name:
+              value:
+            preview:
+              icon: palette
+              icon_color:
+                - key: value
+    _inputs:
+      $:
+        type: array
+        label: Colors
+        comment: Set the colors available in the color selectors throughout the site.
+        options:
+          structures: _structures.color
+      value:
+        type: color
+      name:
+        type: text
+        comment: What is seen in the color selector dropdown.
+  - glob: data/tags.yml
+    _inputs:
+      $:
+        type: array
+        label: Tags
+        comment: Set the tags available in posts.
+      $[*]:
+        type: text
+  - glob: data/nav.yml
+    _inputs:
+      header:
+        type: object
+        options:
+          preview:
+            icon: menu
+            text: Header details
+            subtext: Update logo, colors, and links.
+      footer:
+        type: object
+        options:
+          preview:
+            icon: menu
+            text: Footer details
+            subtext: Update logo, colors, socials, copyright, and links.
+      social:
+        type: array
+        options:
+          structures: _structures.social_links
+    _structures:
+      social_links:
+        values:
+          - value:
+              icon:
+              link:
+              name:
+            _inputs:
+              name:
+                type: text
+                comment: Adds an aria-label for assistive technologies
+  - glob: data/seo.yml
+    _inputs:
+      header:
+        type: object
+        options:
+          preview:
+            icon: menu
+            text: Header details
+            subtext: Update logo, colors, and links.
+      footer:
+        type: object
+        options:
+          preview:
+            icon: menu
+            text: Footer details
+            subtext: Update logo, colors, socials, copyright, and links.
+      default_author:
+        comment: Used as author for blog posts that don't have an author defined on the page.
+
+_editables:
+  content:
+    blockquote: true
+    bold: true
+    format: p h2 h3 h4
+    italic: true
+    strike: true
+    subscript: true
+    superscript: true
+    underline: true
+    link: true
+    bulletedlist: true
+    indent: true
+    numberedlist: true
+    outdent: true
+    code: true
+    embed: true
+    horizontalrule: true
+    image: true
+    table: true
+    undo: true
+    redo: true
+    removeformat: true
+    copyformatting: true
+    image_size_attributes: true
+    snippet: true
+
+_inputs:
+  content_blocks:
+    type: array
+    options:
+      structures: _structures.content_blocks
+      empty_type: array
+  hero_block:
+    type: object
+    options:
+      structures: _structures.hero_blocks
+  text_content:
+    type: markdown
+    options:
+      blockquote: true
+      bold: true
+      format: p
+      italic: true
+      strike: true
+      subscript: true
+      superscript: true
+      underline: true
+      link: true
+      bulletedlist: true
+      indent: true
+      numberedlist: true
+      outdent: true
+      undo: true
+      redo: true
+      removeformat: true
+      copyformatting: true
+  tags:
+    type: multiselect
+    comment: To add a new tag, go to the [tags data file](cloudcannon:collections/data/tags.yml).
+    options:
+      values: data.tags
+      empty_type: array
+  background_color:
+    type: select
+    options:
+      values: data.colors
+      value_key: value
+      preview:
+        text:
+          - key: name
+        icon: palette
+        icon_color: 
+          - key: value
+  text_color:
+    type: select
+    options:
+      values: data.colors
+      value_key: value
+      preview:
+        text:
+          - key: name
+        icon: palette
+        icon_color: 
+          - key: value
+  text_hover_color:
+    type: select
+    options:
+      values: data.colors
+      value_key: value
+      preview:
+        text:
+          - key: name
+        icon: palette
+        icon_color: 
+          - key: value
+  color:
+    type: select
+    options:
+      values: data.colors
+      value_key: value
+      preview:
+        text:
+          - key: name
+        icon: palette
+        icon_color: 
+          - key: value
+  icon:
+    type: select
+    options:
+      values: data.icons
+      value_key: icon_code
+      preview:
+        text:
+          - key: name
+  button_icon:
+    type: select
+    options:
+      values: data.icons
+      value_key: icon_code
+      preview:
+        text:
+          - key: name
+  button_link:
+    type: url
+  button_aria_label:
+    type: text
+    comment: >-
+      Add a description if the button text content is generic, eg. 'Read more' 
+  hover_brightness:
+    type: range
+    options:
+      min: 0
+      max: 1.5
+      step: 0.05
+  seo:
+    type: object
+    options:
+      preview:
+        icon: query_stats
+        text:
+          - 'Search engine optimization'
+        subtext:
+          - key: page_description
+          - 'Update SEO values for the page'
+  layout:
+    hidden: true
+  date:
+    instance_value: NOW
+  page_size:
+    type: number
+    comment: The number of collection items to list per page
+  draft:
+    type: switch
+  social:
+    type: object
+    options:
+      preview:
+        icon: link
+  links[*]:
+    type: object
+    options:
+      preview:
+        icon: link
+        text:
+          - key: text
+          - 'Link'
+        subtext:
+          - key: link
+          - 'Add a social link'
+  social_icon:
+    type: select
+    options:
+      values: data.icons
+  social[*]:
+    type: object
+    options:
+      preview:
+        icon: query_stats
+  logo:
+    type: image
+  logo_url:
+    comment: Link for the logo in the top left of the footer
+  copyright:
+    comment: Automatically prefixed with the current year
+  page_description:
+    comment: Defaults to the description set in the Site SEO data file
+  canonical_url:
+    comment: Defaults to the pages url
+  featured_image:
+    comment: Defaults to the image set in the Site SEO data file
+  open_graph_type:
+    type: select
+    options:
+      values:
+        - website
+        - article
+    comment: Defaults to the type 'website'
+  author_twitter_handle:
+    comment: Defaults to the twitter site value set in the Site SEO data file
+  twitter_site:
+    type: url
+  no_index:
+    type: checkbox
+    comment:
+      When selected this removes the page from your sitemap and adds the noindex
+      robots meta tag
+
+_snippets_imports:
+  hugo:
+    include:
+      - hugo_figure
+      - hugo_vimeo
+      - hugo_youtube
+
+_snippets:
+  alert:
+    template: hugo_shortcode_named_args
+    inline: false
+    preview:
+      icon: announcement
+      text: Alert
+      subtext:
+        - key: alert_message
+        - Update alert content and styles
+    definitions:
+      shortcode_name: alert
+      named_args:
+        - editor_key: background_color
+          source_key: background_color
+          type: string
+        - editor_key: alert_message
+          source_key: alert_message
+          type: string
+        - editor_key: color
+          source_key: color
+          type: string
+        - editor_key: icon
+          source_key: icon
+          type: string
+    _inputs:
+      background_color:
+        type: select
+        comment: Test this config works
+        options:
+          values: data.colors
+          value_key: value
+          preview:
+            text:
+              - key: name
+            icon: palette
+            icon_color: 
+              - key: value
+      icon:
+        type: select
+        options:
+          values: data.icons
+          value_key: icon_code
+          preview:
+            text:
+              - key: name
+      color:
+        type: select
+        options:
+          values: data.colors
+          value_key: value
+          preview:
+            text:
+              - key: name
+            icon: palette
+            icon_color: 
+              - key: value
+      alert_message:
+        comment: The text displayed in the alert.
+        type: textarea
+  accordion:
+    template: hugo_paired_shortcode_named_args
+    inline: false
+    preview:
+      text:
+        - key: summary 
+        - Accordion
+      subtext:
+        - key: inner_text
+      icon: info
+    definitions:
+      shortcode_name: accordion
+      content_key: inner_text
+      positional_args:
+        - editor_key: summary
+          type: string
+    _inputs:
+      summary:
+        type: text
+      inner_text:
+        type: markdown
+        options:
+          blockquote: true
+          bold: true
+          format: p
+          italic: true
+          strike: true
+          subscript: true
+          superscript: true
+          underline: true
+          link: true
+          bulletedlist: true
+          indent: true
+          numberedlist: true
+          outdent: true
+          undo: true
+          redo: true
+          removeformat: true
+          copyformatting: true
