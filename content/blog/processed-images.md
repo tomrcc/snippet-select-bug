@@ -9,7 +9,7 @@ post_hero:
   image_alt: >-
     A woman sitting sideways on a chair, working at a desk on a laptop. The only
     other thing on the desk is a small pot plant.
-tags: 
+tags:
   - images
   - seo
   - components
@@ -41,7 +41,7 @@ In this template there exists the following examples of image processing:
 
 * A Bookshop component for image processing. This should be used when the image needs to update live in CloudCannon's Visual Editor. This is used throughout the placeholder Bookshop components on the site.
 * A built in [figure shortcode](https://gohugo.io/shortcodes/figure/), that comes out-of-the-box with Hugo. This is supposed to be used amongst your markdown content, for example in a blog post.
-* A 'hardcoded' example in the `layouts/blog/single.html` layout file, and in the `header` and `footer` partials. 
+* A 'hardcoded' example in the `layouts/blog/single.html` layout file, and in the `header` and `footer` partials.
 * In the `article-list` partial, which is used in the&nbsp;`layouts/blog/list.html` layout file, and in the `/layouts/\_default/taxonomy.html` layout file.
 
 ## Visual Editing Fallbacks
@@ -52,6 +52,6 @@ If we're using this image processing in a part of the site that isn't a Bookshop
 
 ## A note on videos
 
-The placeholder component `heroes/hero-video` has a video background that is self-hosted - meaning it comes straight from the `static` folder. This video uses a [poster](https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement/poster) image while it loads the video. There is no way to process the image used for the poster, so care must be taken to ensure the image used is a reasonable size. Something in the realm of <100kb as a ballpark figure.
+The placeholder component `heroes/hero-video` has a video background that is self-hosted - meaning it comes straight from the `static` folder. This video uses a [poster](https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement/poster) image while it loads the video. There is no way to process the image used for the poster, so care must be taken to ensure the image used is a reasonable size. Something in the realm of &lt;100kb as a ballpark figure.
 
 Similarly, no processing is run by Hugo on the video itself. Videos can quickly bloat your page size, and slow load times. If you want to use a video background on your site, it is recommended to use a video hosting platform like Vimeo (which lets you customize the video to fit with the styles on your site), or YouTube (not-so-customizable). You could also use a DAM like Cloudinary to avoid self-hosting the video.
